@@ -46,9 +46,10 @@ Pint of Science ended up being a fantastic event. For most of it, I presented ou
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://www.joshborrow.com/cv/</guid>
-      <description>Education Durham University: PhD (Computational Astrophysics): 2017-2021 Studying for a PhD under the supervision of Prof. Richard Bower in the astrophysics of galaxy formation.
+      <description>The information below consitutes my full CV; for a shortened, one-page summary, see this PDF. My publication history is also available on the publications page.
+Education Durham University: PhD (Computational Astrophysics): 2017-2021 Studying for a PhD under the supervision of Prof. Richard Bower in the astrophysics of galaxy formation.
 Main responsibilities:
- Developing subgrid models for cosmological-scale simulations, implementation of physics into the SWIFT code. Development of the SWIFT data processing pipeline with VELOCIraptor, swiftsimio and velociraptor-python. Development of a new SPH scheme for the next generation of EAGLE simulations, SPHENIX.  Durham University: 1st Class (Hons) MPhys: 2013-2017 Studied for an integrated masters degree.</description>
+ Developing subgrid models for cosmological-scale simulations, implementation of physics into the SWIFT code. Development of the SWIFT data processing pipeline with VELOCIraptor, swiftsimio and velociraptor-python.</description>
     </item>
     
     <item>
