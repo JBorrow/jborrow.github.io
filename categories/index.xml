@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Josh Borrow</title>
-    <link>https://jborrow.github.io/categories/</link>
+    <link>http://www.joshborrow.com/categories/</link>
     <description>Recent content in Categories on Josh Borrow</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     
-	<atom:link href="https://jborrow.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.joshborrow.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
