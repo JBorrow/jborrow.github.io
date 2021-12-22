@@ -2,31 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>./blog/posts/making_research_movies_in_python/</loc>
+    <loc>http://joshborrow.com/blog/posts/making_research_movies_in_python/</loc>
     <lastmod>2018-08-06T18:33:53-04:00</lastmod>
   </url><url>
-    <loc>./</loc>
+    <loc>http://joshborrow.com/</loc>
     <lastmod>2018-08-06T18:33:53-04:00</lastmod>
   </url><url>
-    <loc>./blog/posts/density_from_particles/</loc>
+    <loc>http://joshborrow.com/blog/posts/density_from_particles/</loc>
     <lastmod>2018-05-27T14:14:30+01:00</lastmod>
   </url><url>
-    <loc>./blog/posts/pint_of_science_2018/</loc>
+    <loc>http://joshborrow.com/blog/posts/pint_of_science_2018/</loc>
     <lastmod>2018-05-18T08:47:19+01:00</lastmod>
   </url><url>
-    <loc>./blog/</loc>
+    <loc>http://joshborrow.com/blog/</loc>
     <lastmod>2018-05-17T14:52:57+01:00</lastmod>
   </url><url>
-    <loc>./categories/</loc>
+    <loc>http://joshborrow.com/categories/</loc>
   </url><url>
-    <loc>./cv/</loc>
+    <loc>http://joshborrow.com/cv/</loc>
   </url><url>
-    <loc>./highlights/</loc>
+    <loc>http://joshborrow.com/highlights/</loc>
   </url><url>
-    <loc>./proposals/</loc>
+    <loc>http://joshborrow.com/proposals/</loc>
   </url><url>
-    <loc>./publications/</loc>
+    <loc>http://joshborrow.com/publications/</loc>
   </url><url>
-    <loc>./tags/</loc>
+    <loc>http://joshborrow.com/tags/</loc>
   </url>
 </urlset>
