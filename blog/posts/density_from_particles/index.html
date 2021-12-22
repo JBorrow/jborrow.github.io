@@ -3,7 +3,7 @@
 <head>
   <link href="http://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.55.6" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -11,10 +11,10 @@
   <title>Machine Learning Algorithms in a Different Context: Smooth Fields From Particles &middot; Josh Borrow</title>
 
   
-  <link type="text/css" rel="stylesheet" href="http://www.joshborrow.com/css/print.css" media="print">
-  <link type="text/css" rel="stylesheet" href="http://www.joshborrow.com/css/poole.css">
-  <link type="text/css" rel="stylesheet" href="http://www.joshborrow.com/css/syntax.css">
-  <link type="text/css" rel="stylesheet" href="http://www.joshborrow.com/css/hyde.css">
+  <link type="text/css" rel="stylesheet" href="./css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="./css/poole.css">
+  <link type="text/css" rel="stylesheet" href="./css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="./css/hyde.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
@@ -33,15 +33,15 @@
   <div class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
-      <a href="http://www.joshborrow.com/"><h1>Josh Borrow</h1></a>
+      <a href="./"><h1>Josh Borrow</h1></a>
       <p class="lead">
-      PhD student in astrophysics at the <a href="http://icc.dur.ac.uk">Institute for Computational Cosmology</a> in Durham, UK.
+      Postdoc in astrophysicss at the <a href="http://space.mit.edu">MIT Kavli Institute</a> in Massachusetts, USA.
       </p>
     </div>
 
     <ul class="sidebar-nav">
-      <li><a href="http://www.joshborrow.com/">Home</a> </li>
-      <li><a href="/blog/"> Blog </a></li><li><a href="/cv/"> Curriculum Vitae </a></li><li><a href="/highlights/"> Highlights </a></li><li><a href="/proposals/"> Proposals </a></li><li><a href="/publications/"> Publications </a></li>
+      <li><a href="./">Home</a> </li>
+      <li><a href="blog/"> Blog </a></li><li><a href="cv/"> Curriculum Vitae </a></li><li><a href="highlights/"> Highlights </a></li><li><a href="proposals/"> Proposals </a></li><li><a href="publications/"> Publications </a></li>
     </ul>
     <h3 style="color:white">Contact</h3>
     <ul class="sidebar-nav">
@@ -49,7 +49,7 @@
       <li><a href="mailto:josh@joshborrow.com"><i class='fa fa-envelope'></i> E-mail</a></li>
     </ul>
 
-    <p>&copy; 2020. All rights reserved. </p>
+    <p>&copy; 2021. All rights reserved. </p>
   </div>
 </div>
 
@@ -57,77 +57,41 @@
     <div class="post">
   <h1>Machine Learning Algorithms in a Different Context: Smooth Fields From Particles</h1>
   <span class="post-date">Sun, May 27, 2018</span>
-  
-
-<p>I recently gave <a href="../density_from_particles/talk_flat_2018.pdf">a talk</a> about some new hydrodynamics schemes that we&rsquo;re implementing in <a href="https://www.swiftsim.com">SWIFT</a>, our cosmological simulation code. A hydrodynamics scheme takes a density field (or something similar) as an input, and then tells you how to move the elements due to the fluid forces that each element experiences. These schemes are all Lagrangian - they use particles - rather than the more traditional Eulerian grid schemes. This is handy, as a Lagrangian scheme gives you a bunch of conservation properties for free, and with particles you can automatically sample denser regions with more elements rather than having to &ldquo;refine&rdquo; your grid. Whilst putting together this talk, I noticed that there weren&rsquo;t that many good descriptions about how we get a smooth density field from a collection of particles, so I thought I&rsquo;d put one together!</p>
-
+  <p>I recently gave <a href="../density_from_particles/talk_flat_2018.pdf">a talk</a> about some new hydrodynamics schemes that we&rsquo;re implementing in <a href="https://www.swiftsim.com">SWIFT</a>, our cosmological simulation code. A hydrodynamics scheme takes a density field (or something similar) as an input, and then tells you how to move the elements due to the fluid forces that each element experiences. These schemes are all Lagrangian - they use particles - rather than the more traditional Eulerian grid schemes. This is handy, as a Lagrangian scheme gives you a bunch of conservation properties for free, and with particles you can automatically sample denser regions with more elements rather than having to &ldquo;refine&rdquo; your grid. Whilst putting together this talk, I noticed that there weren&rsquo;t that many good descriptions about how we get a smooth density field from a collection of particles, so I thought I&rsquo;d put one together!</p>
 <p>For a Lagrangian scheme to work, we&rsquo;re going to need a way to construct smooth field properties based on the particles, such as the density. It is no use if I can only use the particle properties &ndash; parts of a fluid need to know about each other! To do that, we&rsquo;ll use some concepts that are rife in the machine learning community, but are often over-complicated: nearest-neighbour searching and kernel weighting.</p>
-
 <h2 id="the-problem">The problem</h2>
-
 <p>Say that I give you the following distribution of particles:</p>
-
-<p><img src="../density_from_particles/particles_only.png" alt="A random distribution of particles, with a clear cluster in the top right (shown in orange) and a lack of clustering in the bottom left shown in green" /></p>
-
+<p><img src="../density_from_particles/particles_only.png" alt="A random distribution of particles, with a clear cluster in the top right (shown in orange) and a lack of clustering in the bottom left shown in green"></p>
 <p>Clearly, the field circled in orange is a higher density than the one in green, but how would I go about programatically</p>
-
 <p>a) Finding dense regions, and
 b) Getting an accurate measure of density in those reigions?</p>
-
 <p>This problem turns out to be more complicated than you would first imagine.</p>
-
 <h2 id="attempt-1-using-a-grid">Attempt 1: Using a grid</h2>
-
 <p>The simplest thing that we can do is overlay a grid on the particles, using a fixed cell size. Then, the density in a cell is simply the number of particles in that cell divided by the size of the cell.</p>
-
-<p><img src="../density_from_particles/grid_data.png" alt="A 10x10 grid is overlaid on the particles, showing a rough estimate of the density" /></p>
-
+<p><img src="../density_from_particles/grid_data.png" alt="A 10x10 grid is overlaid on the particles, showing a rough estimate of the density"></p>
 <p>The problem with this is that we&rsquo;re now throwing away one of the key advantages of a particle-based method; the denser regions are sampled automatically by more particles. We might have as well just used a grid from the start. Also, if we refine this grid down and down to get a nice high-resolution image, we&rsquo;ll just get a scatterplot, not a nice field.</p>
-
 <h2 id="attempt-2-different-volumes">Attempt 2: Different Volumes</h2>
-
 <p>One step better than the grid is to change the <em>volume</em> of each cell, keeping the number of particles in each cell constant. Then, we can construct a grid of points at which we want to evaluate the density, and grow domains around each point until we have a certain number of particles (here 30) inside our volume. To find these neighbours to make an image we can use a KD-tree, but in the simulation code we actually use a <a href="http://icc.dur.ac.uk/swift/IXPUG_Cambridge_2017.pdf">pseudo-Verlet list</a>. To get a density all we need to do is divide the fixed mass in each sphere (or circle in our 2D case) by this volume that is different for each point in the grid.</p>
-
-<p><img src="../density_from_particles/fixed_mass_data.png" alt="The changing volume strategy is shown, which gives a nice (albeit noisy) field average" /></p>
-
+<p><img src="../density_from_particles/fixed_mass_data.png" alt="The changing volume strategy is shown, which gives a nice (albeit noisy) field average"></p>
 <p>The new image looks much better, if not a bit noisy. This strategy also has the nice property that it ensures that each &ldquo;cell&rdquo; has the same poisson noise as we (by construction) make sure that they all have the same number of particles in. Where this strategy breaks down, though, is in regions with rapidly changing density. Note that the circles here show how large the volume element is for the pixel at their center.</p>
-
 <p>On the left we have a cluster of 9 particles, and on the right a 10th neighbour that&rsquo;s quite far away. If I change the number of neighbours in the problem I go from finding the nice cluster on the left to getting some nonsense!</p>
-
-<p><img src="../density_from_particles/change_volume_neighbour_number.png" alt="" /></p>
-
+<p><img src="../density_from_particles/change_volume_neighbour_number.png" alt=""></p>
 <p>The addition of this single neighbour drastically changes the shape of the density profile, and in fact finds the highest density region being in between the two clusters &ndash; which it clearly is not. Dealing with this problem requires us to have a way of weighting the particles.</p>
-
 <h2 id="attempt-3-a-smoothed-density-estimate">Attempt 3: A smoothed density estimate</h2>
-
 <p>To construct a more smooth estimate of the density, we can use a smoothing kernel. This kernel ensures that particles that are further away matter less to the density estimate. We cut off the kernel, in this case, when we have 30 neighbours and define this as two times the smoothing length. The kernel we use here is a cubic spline, which is essentially an approximation to a <a href="https://en.wikipedia.org/wiki/Gaussian_function">gaussian</a> that&rsquo;s much cheaper to compute.</p>
-
-<p><img src="../density_from_particles/kernel_plot.png" alt="Plot of a typical smoothing kernel, this looks like a gaussian" /></p>
-
+<p><img src="../density_from_particles/kernel_plot.png" alt="Plot of a typical smoothing kernel, this looks like a gaussian"></p>
 <p>By using the smoothed density,</p>
-
-<p><img src="../density_from_particles/rho_equation.svg" alt="rho = sum of the masses times the kernels" /></p>
-
+<p><img src="../density_from_particles/rho_equation.svg" alt="rho = sum of the masses times the kernels"></p>
 <p>we can re-construct the smooth density map in a much less noisy way.</p>
-
-<p><img src="../density_from_particles/sph_data.png" alt="Density map using the smoothed density estimate" /></p>
-
+<p><img src="../density_from_particles/sph_data.png" alt="Density map using the smoothed density estimate"></p>
 <p>This smoothed map is notably different than a smoothed version of the volume changing one from attempt 2. If we were to smooth the image with a <a href="https://en.wikipedia.org/wiki/Gaussian_filter">gaussian filter</a>, we would loose the information about the different smoothing lengths with densities; this version is smoothed on the scale of the data (particles), rather than our choice of pixel sizes.</p>
-
 <p>We also do much better in the changing neighbour-number comparison test:</p>
-
-<p><img src="../density_from_particles/sph_neighbour_number.png" alt="Density map with changing neighbour number that now actually lines up!" /></p>
-
+<p><img src="../density_from_particles/sph_neighbour_number.png" alt="Density map with changing neighbour number that now actually lines up!"></p>
 <p>It&rsquo;s not fantastic, but at least our dense location is somewhat co-located with the actual location of the particle cluster.</p>
-
 <h2 id="why-do-any-of-this">Why do any of this?</h2>
-
-<p>Getting this smoothed estimate on the density actually allows us to construct an equation of motion that tells us how these fluids move; check out the video below that uses this in the famous <a href="https://en.wikipedia.org/wiki/Kelvin–Helmholtz_instability">Kelvin-Helmholtz</a> test.</p>
-
-<video src="https://gitlab.cosma.dur.ac.uk/swift/swiftsim/uploads/8427d55845740e1e11c751fd04f779fb/khmovie.mp4" width="100%" controls="true" data-setup="{}" data-title="khmovie"></video>
-
+<p>Getting this smoothed estimate on the density actually allows us to construct an equation of motion that tells us how these fluids move; check out the video below that uses this in the famous <a href="https://en.wikipedia.org/wiki/Kelvin%E2%80%93Helmholtz_instability">Kelvin-Helmholtz</a> test.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
 <p>If you enjoyed this blog post, I suggest you go and read Daniel Price&rsquo;s fantastic introduction to the method, <a href="http://users.monash.edu.au/~dprice/SPH/price-spmhd.pdf">Smoothed Particle Hydrodynamics</a>. It&rsquo;s a great way to get started!</p>
-
 <p>Hopefully this has given you some idea of where else these methods that are ubiquitous in machine learning are employed! The code used to make all of these plots is available on GitHub <a href="https://github.com/JBorrow/density-from-particles">here</a>. It&rsquo;s fairly simple, so take a look!</p>
 
 </div>

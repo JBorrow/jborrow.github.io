@@ -1,56 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
-    <loc>http://www.joshborrow.com/blog/posts/making_research_movies_in_python/</loc>
+    <loc>./blog/posts/making_research_movies_in_python/</loc>
     <lastmod>2018-08-06T18:33:53-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.joshborrow.com/</loc>
+  </url><url>
+    <loc>./</loc>
     <lastmod>2018-08-06T18:33:53-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.joshborrow.com/blog/posts/density_from_particles/</loc>
+  </url><url>
+    <loc>./blog/posts/density_from_particles/</loc>
     <lastmod>2018-05-27T14:14:30+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.joshborrow.com/blog/posts/pint_of_science_2018/</loc>
+  </url><url>
+    <loc>./blog/posts/pint_of_science_2018/</loc>
     <lastmod>2018-05-18T08:47:19+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.joshborrow.com/blog/</loc>
+  </url><url>
+    <loc>./blog/</loc>
     <lastmod>2018-05-17T14:52:57+01:00</lastmod>
+  </url><url>
+    <loc>./categories/</loc>
+  </url><url>
+    <loc>./cv/</loc>
+  </url><url>
+    <loc>./highlights/</loc>
+  </url><url>
+    <loc>./proposals/</loc>
+  </url><url>
+    <loc>./publications/</loc>
+  </url><url>
+    <loc>./tags/</loc>
   </url>
-  
-  <url>
-    <loc>http://www.joshborrow.com/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.joshborrow.com/cv/</loc>
-  </url>
-  
-  <url>
-    <loc>http://www.joshborrow.com/highlights/</loc>
-  </url>
-  
-  <url>
-    <loc>http://www.joshborrow.com/proposals/</loc>
-  </url>
-  
-  <url>
-    <loc>http://www.joshborrow.com/publications/</loc>
-  </url>
-  
-  <url>
-    <loc>http://www.joshborrow.com/tags/</loc>
-    <priority>0</priority>
-  </url>
-  
 </urlset>

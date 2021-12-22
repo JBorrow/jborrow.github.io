@@ -1,41 +1,37 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Blog on Josh Borrow</title>
-    <link>http://www.joshborrow.com/blog/</link>
+    <link>./blog/</link>
     <description>Recent content in Blog on Josh Borrow</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Thu, 17 May 2018 14:52:57 +0100</lastBuildDate>
-    
-	<atom:link href="http://www.joshborrow.com/blog/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 17 May 2018 14:52:57 +0100</lastBuildDate><atom:link href="./blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Making Research Movies in python</title>
-      <link>http://www.joshborrow.com/blog/posts/making_research_movies_in_python/</link>
+      <link>./blog/posts/making_research_movies_in_python/</link>
       <pubDate>Mon, 06 Aug 2018 18:33:53 -0400</pubDate>
       
-      <guid>http://www.joshborrow.com/blog/posts/making_research_movies_in_python/</guid>
+      <guid>./blog/posts/making_research_movies_in_python/</guid>
       <description>Sometimes, you need more than a picture to say 1000 words. A few hundred pictures, all stuck together in a movie, might give you all of the information that you need, though. However, making movies in everyone&amp;rsquo;s favourite language (clearly python) is quite obtuse, at least when you try to use the de-facto plotting library matplotlib.
 There are a bunch of ways that you can go about making a little movie of your results.</description>
     </item>
     
     <item>
       <title>Machine Learning Algorithms in a Different Context: Smooth Fields From Particles</title>
-      <link>http://www.joshborrow.com/blog/posts/density_from_particles/</link>
+      <link>./blog/posts/density_from_particles/</link>
       <pubDate>Sun, 27 May 2018 14:14:30 +0100</pubDate>
       
-      <guid>http://www.joshborrow.com/blog/posts/density_from_particles/</guid>
+      <guid>./blog/posts/density_from_particles/</guid>
       <description>I recently gave a talk about some new hydrodynamics schemes that we&amp;rsquo;re implementing in SWIFT, our cosmological simulation code. A hydrodynamics scheme takes a density field (or something similar) as an input, and then tells you how to move the elements due to the fluid forces that each element experiences. These schemes are all Lagrangian - they use particles - rather than the more traditional Eulerian grid schemes. This is handy, as a Lagrangian scheme gives you a bunch of conservation properties for free, and with particles you can automatically sample denser regions with more elements rather than having to &amp;ldquo;refine&amp;rdquo; your grid.</description>
     </item>
     
     <item>
       <title>Pint of Science 2018</title>
-      <link>http://www.joshborrow.com/blog/posts/pint_of_science_2018/</link>
+      <link>./blog/posts/pint_of_science_2018/</link>
       <pubDate>Fri, 18 May 2018 08:47:19 +0100</pubDate>
       
-      <guid>http://www.joshborrow.com/blog/posts/pint_of_science_2018/</guid>
+      <guid>./blog/posts/pint_of_science_2018/</guid>
       <description>Pint of Science 2018 came to Durham on the 14th of May, and was a three-day long festival of science. For the Durham &amp;ldquo;chapter&amp;rdquo;, I ran publicity &amp;ndash; that involved making posters and flyers, contacting media outlets, and doing &amp;ldquo;social media&amp;rdquo;. It also involved managing a small team of people to help me out with all of that.
 Pint of Science ended up being a fantastic event. For most of it, I presented our Galaxy Makers &amp;ldquo;Tour the Universe&amp;rdquo; virtual reality demo at our Atoms to Galaxies event.</description>
     </item>

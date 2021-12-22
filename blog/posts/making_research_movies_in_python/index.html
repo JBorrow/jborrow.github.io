@@ -3,7 +3,7 @@
 <head>
   <link href="http://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.55.6" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -11,10 +11,10 @@
   <title>Making Research Movies in python &middot; Josh Borrow</title>
 
   
-  <link type="text/css" rel="stylesheet" href="http://www.joshborrow.com/css/print.css" media="print">
-  <link type="text/css" rel="stylesheet" href="http://www.joshborrow.com/css/poole.css">
-  <link type="text/css" rel="stylesheet" href="http://www.joshborrow.com/css/syntax.css">
-  <link type="text/css" rel="stylesheet" href="http://www.joshborrow.com/css/hyde.css">
+  <link type="text/css" rel="stylesheet" href="./css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="./css/poole.css">
+  <link type="text/css" rel="stylesheet" href="./css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="./css/hyde.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
@@ -33,15 +33,15 @@
   <div class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
-      <a href="http://www.joshborrow.com/"><h1>Josh Borrow</h1></a>
+      <a href="./"><h1>Josh Borrow</h1></a>
       <p class="lead">
-      PhD student in astrophysics at the <a href="http://icc.dur.ac.uk">Institute for Computational Cosmology</a> in Durham, UK.
+      Postdoc in astrophysicss at the <a href="http://space.mit.edu">MIT Kavli Institute</a> in Massachusetts, USA.
       </p>
     </div>
 
     <ul class="sidebar-nav">
-      <li><a href="http://www.joshborrow.com/">Home</a> </li>
-      <li><a href="/blog/"> Blog </a></li><li><a href="/cv/"> Curriculum Vitae </a></li><li><a href="/highlights/"> Highlights </a></li><li><a href="/proposals/"> Proposals </a></li><li><a href="/publications/"> Publications </a></li>
+      <li><a href="./">Home</a> </li>
+      <li><a href="blog/"> Blog </a></li><li><a href="cv/"> Curriculum Vitae </a></li><li><a href="highlights/"> Highlights </a></li><li><a href="proposals/"> Proposals </a></li><li><a href="publications/"> Publications </a></li>
     </ul>
     <h3 style="color:white">Contact</h3>
     <ul class="sidebar-nav">
@@ -49,7 +49,7 @@
       <li><a href="mailto:josh@joshborrow.com"><i class='fa fa-envelope'></i> E-mail</a></li>
     </ul>
 
-    <p>&copy; 2020. All rights reserved. </p>
+    <p>&copy; 2021. All rights reserved. </p>
   </div>
 </div>
 
@@ -57,210 +57,171 @@
     <div class="post">
   <h1>Making Research Movies in python</h1>
   <span class="post-date">Mon, Aug 6, 2018</span>
-  
-
-<p>Sometimes, you need more than a picture to say 1000 words. A few hundred pictures, all
+  <p>Sometimes, you need more than a picture to say 1000 words. A few hundred pictures, all
 stuck together in a movie, might give you all of the information that you need,
 though. However, making movies in everyone&rsquo;s favourite language (clearly <code>python</code>) is
 quite obtuse, at least when you try to use the de-facto plotting library
 <a href="https://matplotlib.org">matplotlib</a>.</p>
-
 <p>There are a bunch of ways that you can go about making a little movie of your results.
 An example of such a movie is shown below, which shows a Kelvin-Helmholtz instability
 (a density slice) evolving through time. This was made using <code>FuncAnimation</code> in
 matplotlib, which we&rsquo;ll discuss later.</p>
-
-<div class="video-container" style="width:100%">
-<video src="https://gitlab.cosma.dur.ac.uk/swift/swiftsim/uploads/bcfd3c908cd88cbab854c82e5f2fd7a6/khmovie_pressure-energy.mp4" width="100%" controls="true" data-setup="{}" data-title="khmovie_pressure-energy"></video>
-</div>
-
+<!-- raw HTML omitted -->
 <h2 id="the-simple-method-generating-individual-frames">The simple method: generating individual frames</h2>
-
 <p>The most simple way to make a movie is to take your regular plot-generating script
 and run it <em>n</em> times to get <em>n</em> frames using slightly different data each time. That
 will write <em>n</em> <code>.png</code> images, which you can then stitch together using a utility
 like <code>ffmpeg</code>.</p>
-
 <p>For example, let&rsquo;s look at a sine wave:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+<span style="color:#f92672">import</span> sys
 
-<pre><code class="language-python">import numpy as np
-import matplotlib.pyplot as plt
-import sys
+<span style="color:#75715e"># Grab the frame number from python3 easy_mode.py &lt;x&gt;</span>
+frame_number <span style="color:#f92672">=</span> int(sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>])
 
-# Grab the frame number from python3 easy_mode.py &lt;x&gt;
-frame_number = int(sys.argv[1])
+<span style="color:#75715e"># Some global variables to define the whole run</span>
+total_number_of_frames <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
+total_width_of_sine_wave <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>pi
 
-# Some global variables to define the whole run
-total_number_of_frames = 100
-total_width_of_sine_wave = 2 * np.pi
+<span style="color:#75715e"># How far through are we?</span>
+current_factor <span style="color:#f92672">=</span> frame_number <span style="color:#f92672">/</span> total_number_of_frames
 
-# How far through are we?
-current_factor = frame_number / total_number_of_frames
-
-current_x_data = np.linspace(
-    0,
-    total_width_of_sine_wave * current_factor,
+current_x_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(
+    <span style="color:#ae81ff">0</span>,
+    total_width_of_sine_wave <span style="color:#f92672">*</span> current_factor,
     frame_number
 )
-current_y_data = np.sin(current_x_data)
+current_y_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sin(current_x_data)
 
-# Now we can do the plotting!
-plt.plot(current_x_data, current_y_data)
+<span style="color:#75715e"># Now we can do the plotting!</span>
+plt<span style="color:#f92672">.</span>plot(current_x_data, current_y_data)
 
-# Have to set these otherwise we will get one ugly plot!
-plt.xlim(0, total_width_of_sine_wave)
-plt.ylim(-1.2, 1.2)
+<span style="color:#75715e"># Have to set these otherwise we will get one ugly plot!</span>
+plt<span style="color:#f92672">.</span>xlim(<span style="color:#ae81ff">0</span>, total_width_of_sine_wave)
+plt<span style="color:#f92672">.</span>ylim(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.2</span>, <span style="color:#ae81ff">1.2</span>)
 
-plt.xlabel(&quot;$x$&quot;)
-plt.ylabel(&quot;$\sin(x)$&quot;)
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;$x$&#34;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;$\sin(x)$&#34;</span>)
 
-# Make me pretty
-plt.tight_layout()
-plt.savefig(&quot;image_{:03d}.png&quot;.format(frame_number))
-</code></pre>
-
-<p>Then, we can make all 100 frames by running a little bash for loop,</p>
-
-<pre><code class="language-bash">for image in {0..100}
-do
+<span style="color:#75715e"># Make me pretty</span>
+plt<span style="color:#f92672">.</span>tight_layout()
+plt<span style="color:#f92672">.</span>savefig(<span style="color:#e6db74">&#34;image_</span><span style="color:#e6db74">{:03d}</span><span style="color:#e6db74">.png&#34;</span><span style="color:#f92672">.</span>format(frame_number))
+</code></pre></div><p>Then, we can make all 100 frames by running a little bash for loop,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">for</span> image in <span style="color:#f92672">{</span>0..100<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">do</span>
   python3 easy_mode.py $image
-done
-</code></pre>
-
-<p>and stitch them together in a movie using a (somewhat complicated) <code>ffmpeg</code> command,</p>
-
-<pre><code class="language-bash">ffmpeg -i image_%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p out_easy_mode.mp4
-</code></pre>
-
-<div class="video-container" style="width:100%">
-<video src="../making_research_movies_in_python/out_easy_mode.mp4" width="100%" controls="true" data-setup="{}" data-title="out_easy_mode"></video>
-</div>
-
+<span style="color:#66d9ef">done</span>
+</code></pre></div><p>and stitch them together in a movie using a (somewhat complicated) <code>ffmpeg</code> command,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ffmpeg -i image_%03d.png -c:v libx264 -vf fps<span style="color:#f92672">=</span><span style="color:#ae81ff">25</span> -pix_fmt yuv420p out_easy_mode.mp4
+</code></pre></div><!-- raw HTML omitted -->
 <p>This ends up looking fine, but takes <em>ages</em>. There are a number of reasons for this:</p>
-
 <ul>
 <li>We are re-launching python for every frame, which takes quite a while in itself,</li>
 <li>We are re-importing all of the libraries we need every time, as well as generating
 their internal data structures (such as the matplotlib axis),</li>
 <li>We are re-generating data for every single frame, rather than re-using in-memory data.</li>
 </ul>
-
 <p>This is a very convenient way of making a movie, especially if you already have a
 script. But when it is easy to make the data ahead of time, and all you want to do is
 plot a sub-set of them, then it is a huge waste of resources. This is especially
 prominent in science, where even <em>loading</em> the data may take a significant amount of
 time. To make this video, including the <code>ffmpeg</code> stitching, it took 74 seconds on my
 base-model 2017 MacBook Pro.</p>
-
 <h2 id="using-the-dreaded-funcanimation">Using the dreaded <code>FuncAnimation</code></h2>
-
 <p>We can simplify the above massively, at least for this simple case, by using the
 built-in <code>matplotlib.animation</code> API. We&rsquo;ll no longer need to do that bash for loop,
 and the script itself will not have to re-generate all of the data!</p>
-
 <p>There are two ways that you can access animations in <code>matplotlib</code>. The first is through
 <code>FuncAnimation</code>, where you supply a function that updates a given <code>axes</code> object to
 generate each frame, and <code>ArtistAnimation</code>, which takes a list of <code>matplotlib</code> <code>artist</code>
 objects.</p>
-
 <p>For the sine wave example above, it should be fairly simple to figure out how to write
 a function that selects a sub-set of the data for plotting at a given frame <em>n</em>. The
 code that does this below is fairly simple. All we need to do is define a function,
 called in this case <code>animate</code>, which updates the line plot that we have for each frame.
 We can pre-generate the data and just select sub-sets of it in this case.</p>
-
 <p>The hard part in this case is finding out <em>how</em> to update the line object. Each type
 of <code>matplotlib</code> object behaves in a slightly different way, but they usually have a
 <code>set_&lt;something&gt;</code> method that you can use to do this kind of updating.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
 
-<pre><code class="language-python">import numpy as np
-import matplotlib.pyplot as plt
+<span style="color:#f92672">from</span> matplotlib.animation <span style="color:#f92672">import</span> FuncAnimation
 
-from matplotlib.animation import FuncAnimation
-
-# Some global variables to define the whole run
-total_number_of_frames = 100
-total_width_of_sine_wave = 2 * np.pi
-all_x_data = np.linspace(0, total_width_of_sine_wave, total_number_of_frames)
-all_y_data = np.sin(all_x_data)
-
-
-def animate(frame, line):
-    &quot;&quot;&quot;
-    Animation function. Takes the current frame number (to select the potion of
-    data to plot) and a line object to update.
-    &quot;&quot;&quot;
-
-    # Not strictly neccessary, just so we know we are stealing these from
-    # the global scope
-    global all_x_data, all_y_data
-
-    # We want up-to and _including_ the frame'th element
-    current_x_data = all_x_data[: frame + 1]
-    current_y_data = all_y_data[: frame + 1]
-
-    line.set_xdata(current_x_data)
-    line.set_ydata(current_y_data)
-
-    # This comma is necessary!
-    return (line,)
+<span style="color:#75715e"># Some global variables to define the whole run</span>
+total_number_of_frames <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
+total_width_of_sine_wave <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>pi
+all_x_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0</span>, total_width_of_sine_wave, total_number_of_frames)
+all_y_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sin(all_x_data)
 
 
-# Now we can do the plotting!
-fig, ax = plt.subplots(1)
-# Initialise our line
-line, = ax.plot([0], [0])
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">animate</span>(frame, line):
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Animation function. Takes the current frame number (to select the potion of
+</span><span style="color:#e6db74">    data to plot) and a line object to update.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
 
-# Have to set these otherwise we will get one ugly plot!
-ax.set_xlim(0, total_width_of_sine_wave)
-ax.set_ylim(-1.2, 1.2)
+    <span style="color:#75715e"># Not strictly neccessary, just so we know we are stealing these from</span>
+    <span style="color:#75715e"># the global scope</span>
+    <span style="color:#66d9ef">global</span> all_x_data, all_y_data
 
-ax.set_xlabel(&quot;$x$&quot;)
-ax.set_ylabel(&quot;$\sin(x)$&quot;)
+    <span style="color:#75715e"># We want up-to and _including_ the frame&#39;th element</span>
+    current_x_data <span style="color:#f92672">=</span> all_x_data[: frame <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]
+    current_y_data <span style="color:#f92672">=</span> all_y_data[: frame <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]
 
-# Make me pretty
-fig.tight_layout()
+    line<span style="color:#f92672">.</span>set_xdata(current_x_data)
+    line<span style="color:#f92672">.</span>set_ydata(current_y_data)
 
-animation = FuncAnimation(
-    # Your Matplotlib Figure object
+    <span style="color:#75715e"># This comma is necessary!</span>
+    <span style="color:#66d9ef">return</span> (line,)
+
+
+<span style="color:#75715e"># Now we can do the plotting!</span>
+fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">1</span>)
+<span style="color:#75715e"># Initialise our line</span>
+line, <span style="color:#f92672">=</span> ax<span style="color:#f92672">.</span>plot([<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>])
+
+<span style="color:#75715e"># Have to set these otherwise we will get one ugly plot!</span>
+ax<span style="color:#f92672">.</span>set_xlim(<span style="color:#ae81ff">0</span>, total_width_of_sine_wave)
+ax<span style="color:#f92672">.</span>set_ylim(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.2</span>, <span style="color:#ae81ff">1.2</span>)
+
+ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;$x$&#34;</span>)
+ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;$\sin(x)$&#34;</span>)
+
+<span style="color:#75715e"># Make me pretty</span>
+fig<span style="color:#f92672">.</span>tight_layout()
+
+animation <span style="color:#f92672">=</span> FuncAnimation(
+    <span style="color:#75715e"># Your Matplotlib Figure object</span>
     fig,
-    # The function that does the updating of the Figure
+    <span style="color:#75715e"># The function that does the updating of the Figure</span>
     animate,
-    # Frame information (here just frame number)
-    np.arange(total_number_of_frames),
-    # Extra arguments to the animate function
-    fargs=[line],
-    # Frame-time in ms; i.e. for a given frame-rate x, 1000/x
-    interval=1000 / 25
+    <span style="color:#75715e"># Frame information (here just frame number)</span>
+    np<span style="color:#f92672">.</span>arange(total_number_of_frames),
+    <span style="color:#75715e"># Extra arguments to the animate function</span>
+    fargs<span style="color:#f92672">=</span>[line],
+    <span style="color:#75715e"># Frame-time in ms; i.e. for a given frame-rate x, 1000/x</span>
+    interval<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">25</span>
 )
-animation.save(&quot;out_funcanimation.mp4&quot;)
-</code></pre>
-
-<p>Thankfully, it looks exactly the same!</p>
-
-<div class="video-container" style="width:100%">
-<video src="../making_research_movies_in_python/out_funcanimation.mp4" width="100%" controls="true" data-setup="{}" data-title="out_funcanimation"></video>
-</div>
-
+animation<span style="color:#f92672">.</span>save(<span style="color:#e6db74">&#34;out_funcanimation.mp4&#34;</span>)
+</code></pre></div><p>Thankfully, it looks exactly the same!</p>
+<!-- raw HTML omitted -->
 <p>To make this movie using the <code>FuncAnimation</code> method, it took 2.16 seconds on my base-
 model 2017 (13 inch) MacBook Pro. That&rsquo;s a speed-up of around 30x just by not launching
 the python interpreter each time! We also didn&rsquo;t need any kind of clumsy bash for-loop
 to make the frames, and didn&rsquo;t need to hand-call <code>ffmpeg</code>, that was all handled for
 us.</p>
-
 <h2 id="2d-grid-movie">2D Grid Movie</h2>
-
 <p>A very common use of a movie is to show the time-evolution of a visualistion - like the
 movie of the Kelvin-Helmholtz instability that I showed earlier. This is a little more
 difficult than it might first seem, because of the way that the resulting object from
 <code>imshow</code> or <code>pcolormesh</code> behaves. Unfortunately, those both return different things,
 so we&rsquo;ll focus on <code>imshow</code> in this specific example as it seems the most popular.</p>
-
 <p>The set-up is very similar. Just write an <code>animate</code> function that loads (or finds in
 memory) the correct data, and have it play with a <code>set_&lt;x&gt;</code> method. You will also want
 to do some playing around with the figure properties to make sure that you are only
 plotting on the right pixels. To do that:</p>
-
 <ul>
 <li>Set the <code>figsize</code> parameter to <code>(1, 1)</code></li>
 <li>You can then set the number of pixels in your output video by setting the <code>dpi</code>
@@ -270,14 +231,11 @@ parameter in the <code>save</code> method on your <code>FuncAnimation</code> obj
 <li>Finally, use <code>.axis(&quot;off&quot;)</code> on your axis object to remove the thin black line
 that normally bounds the plot</li>
 </ul>
-
 <p>Don&rsquo;t forget to manually set <code>vmin</code> and <code>vmax</code> on your colour map, or map your data
 yourself. Otherwise, those will be set based on the <em>initial</em> frame and may get
 completely washed out.</p>
-
 <p>Here&rsquo;s a script that does that with some random data:</p>
-
-<pre><code>import numpy as np
+<pre tabindex="0"><code>import numpy as np
 import matplotlib.pyplot as plt
 
 from matplotlib.animation import FuncAnimation
@@ -331,43 +289,28 @@ animation = FuncAnimation(
 
 # Try to set the DPI to the actual number of pixels you're plotting
 animation.save(&quot;out_2dgrid.mp4&quot;, dpi=512)
-</code></pre>
-
-<p>Here&rsquo;s the movie that produces!
-<div class="video-container" style="width:100%">
-<video src="../making_research_movies_in_python/out_2dgrid.mp4" width="100%" controls="true" data-setup="{}" data-title="out_2dgrid"></video>
-</div></p>
-
+</code></pre><p>Here&rsquo;s the movie that produces!</p>
+<!-- raw HTML omitted -->
 <h1 id="sticking-it-all-together-with-ffmpeg">Sticking it all together (with <code>ffmpeg</code>)</h1>
-
 <p>Sometimes you have more than one movie that you would like to show side-by-side. There
 are a bunch of ways you can do this (even by just using two <code>image</code> objects in a
 <code>FuncAnimation</code>), but it&rsquo;s often nice to do things outside of python, as you may
 want to make different combinations. I would recommend making a single &ldquo;movie&rdquo; with
 each python script, and then using the following ffmpeg filter to stick them
 together.</p>
-
 <p>Say you have two videos, one called <code>x.mp4</code>, and the other called <code>y.mp4</code>. You want to
 display them side-by-side. <code>ffmpeg</code> makes this very easy through it&rsquo;s complex filter
 function, so all you have to do is write</p>
-
-<pre><code>ffmpeg -i x.mp4 -i y.mp4 -filter_complex hstack out.mp4
-</code></pre>
-
-<p>That was easy! Things get a little more complicated when you want more videos in your
+<pre tabindex="0"><code>ffmpeg -i x.mp4 -i y.mp4 -filter_complex hstack out.mp4
+</code></pre><p>That was easy! Things get a little more complicated when you want more videos in your
 layout, though. Then you&rsquo;ll have to learn a little bit of <code>ffmpeg</code> magic.</p>
-
 <p>In this case, we have four videos <code>a.mp4</code>, <code>b.mp4</code>, <code>c.mp4</code>, and <code>d.mp4</code>. We want to
 stack them in a 2x2 grid. To do this, we have two options. We could run <code>ffmpeg</code> three
 times - twice with <code>hstack</code> to put two of them together, and once with <code>vstack</code> to
 stack those 2x1&rsquo;s on top of each other. Alternatively, we can use variables within
 <code>ffmpeg</code> itself. Here&rsquo;s the command to do that - we&rsquo;ll break this down afterwards:</p>
-
-<pre><code>ffmpeg -i a.mp4 -i b.mp4 -i c.mp4 -i d.mp4 -filter_complex &quot;[0:v][1:v]hstack[top];[2:v][3:v]hstack[bottom];[top][bottom]vstack[out]&quot; -map &quot;[out]&quot; out.mp4
-</code></pre>
-
-<p>There are a few things here that aren&rsquo;t immediately obvious:</p>
-
+<pre tabindex="0"><code>ffmpeg -i a.mp4 -i b.mp4 -i c.mp4 -i d.mp4 -filter_complex &quot;[0:v][1:v]hstack[top];[2:v][3:v]hstack[bottom];[top][bottom]vstack[out]&quot; -map &quot;[out]&quot; out.mp4
+</code></pre><p>There are a few things here that aren&rsquo;t immediately obvious:</p>
 <ul>
 <li><code>[i:v]</code> references the <code>-i &lt;video&gt;</code> input that was given (in that order, such that here <code>[0:v]</code> corresponds to <code>a.mp4</code>, <code>[2:v]</code> corresponds to <code>c.mp4</code> as a kind of variable</li>
 <li>To apply a filter, it requires the input &lsquo;variables&rsquo; on the left, and the output
@@ -376,17 +319,11 @@ variables on the right, <code>[&lt;input 1&gt;][&lt;input 2&gt;]&lt;filter&gt;[&
 <li>We need to map <code>[out]</code> to the global scope to let <code>ffmpeg</code> know that&rsquo;s the variable
 we want to write to file</li>
 </ul>
-
 <p>Here&rsquo;s what that looks like when we stick four movies with different colourmaps
 together (bonus points for those who know the names of all of these, and which one
 you should <em>never</em> use):</p>
-
-<div class="video-container" style="width:100%">
-<video src="../making_research_movies_in_python/out_compare_all.mp4" width="100%" controls="true" data-setup="{}" data-title="out_compare_all"></video>
-</div>
-
+<!-- raw HTML omitted -->
 <h1 id="summary">Summary</h1>
-
 <ul>
 <li>You can stick together a bunch of frames generated from a script with <code>ffmpeg</code>, but
 it&rsquo;s super slow!</li>
@@ -394,7 +331,6 @@ it&rsquo;s super slow!</li>
 <li><code>ffmpeg</code> can stick your movies together for you, allowing you to not have to
 worry about re-generating frames quite as often</li>
 </ul>
-
 <p>And with that, I&rsquo;ll let you go forth and make some fantastic movies!</p>
 
 </div>
