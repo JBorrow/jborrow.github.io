@@ -14,6 +14,8 @@ for item in data_pubs.iterrows():
 
     output += f"+ {item['Authors']}: _{item['Title']}_, published {item['Date Published']} in {item['Journal']}. [Link]({item['Link']}).\n"
 
+output = output.replace("Josh Borrow", "**Josh Borrow**")
+
 output += "\n\n## Talks\n\n"
 
 for item in data_talks.iterrows():

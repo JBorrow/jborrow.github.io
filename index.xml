@@ -54,7 +54,7 @@ Education Durham University: PhD (Computational Astrophysics): 2017-2021 Studyin
       
       <guid>http://joshborrow.com/highlights/</guid>
       <description>See below for a few highlights from my recent work. I regularly post things to my twitter profile (@JBorrow) if you want an even more up-to-date list! This page usually contains interesting visualisations and tid-bits; for an overview of my published research work please see publications.
-Visualising the Early Universe A galaxy protocluster at redshift z=5.5 (the very early universe). The inner regions of the maps show the temperature of the gas, the middle regions show the photon density in the gas, and the outer regions showing metallicity.</description>
+THESAN-HR Flagship This image shows a zoom in on a very early dwarf galaxy (at z=7) in the flagship THESAN-HR simulations. In this volume, we zoom in on the hot gas halo to show the complex gas structure, followed by zooming into the 1 kpc, dust, gas disk.</description>
     </item>
     
     <item>
@@ -76,7 +76,7 @@ HPC-Europa - March 2020 Granted travel funds for a two month visit to Leiden, NL
       
       <guid>http://joshborrow.com/publications/</guid>
       <description>Thanks to my relatively unique name, you can find a complete list of my publications on the arXiv here.
-Publications  Josh Borrow, Matthieu Schaller, Richard G. Bower, Joop Schaye: SPHENIX: Smoothed Particle Hydrodynamics for the next generation of galaxy formation simulations, published 1 Nov 21 in MNRAS. Link. Karen Pardos Olsen et al. (incl Josh Borrow): SÍGAME v3: Gas Fragmentation in Postprocessing of Cosmological Simulations for More Accurate Infrared Line Emission Modeling, published 1 Nov 21 in ApJ.</description>
+Publications  Josh Borrow, Matthieu Schaller, Yannick Bahe, Joop Schaye, Folkert Nobels, Aaron Ludlow, Edoardo Altamura: Everything has changed: the impact of random variations on the predictive power of galaxy formation simulations, published Nov 22 in To be submitted to MNRAS. Link. Josh Borrow, Mark Vogelsberger, Enrico Garaldi, Rahul Kannan, Aaron Smith, Volker Springel, Rudiger Pakmor, Lars Hernquist: THESAN-HR: How does reionization impact early galaxy evolution?</description>
     </item>
     
   </channel>
