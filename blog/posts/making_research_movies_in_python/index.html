@@ -3,7 +3,7 @@
 <head>
   <link href="http://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.88.1" />
+  <meta name="generator" content="Hugo 0.120.1">
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -24,8 +24,6 @@
   <link rel="shortcut icon" href="/favicon.png">
 
   
-  <link href="" rel="alternate" type="application/rss+xml" title="Josh Borrow" />
-
   
 </head>
 
@@ -35,7 +33,7 @@
     <div class="sidebar-about">
       <a href="https://www.joshborrow.com/"><h1>Josh Borrow</h1></a>
       <p class="lead">
-      Postdoc in astrophysicss at the <a href="http://space.mit.edu">MIT Kavli Institute</a> in Massachusetts, USA.
+      Research Software Engineer at the <a href="https://www.sas.upenn.edu">University of Pennsylvania</a> in Philadelphia, USA.
       </p>
     </div>
 
@@ -49,7 +47,7 @@
       <li><a href="mailto:josh@joshborrow.com"><i class='fa fa-envelope'></i> E-mail</a></li>
     </ul>
 
-    <p>&copy; 2022. All rights reserved. </p>
+    <p>&copy; 2023. All rights reserved. </p>
   </div>
 </div>
 
@@ -73,48 +71,48 @@ and run it <em>n</em> times to get <em>n</em> frames using slightly different da
 will write <em>n</em> <code>.png</code> images, which you can then stitch together using a utility
 like <code>ffmpeg</code>.</p>
 <p>For example, let&rsquo;s look at a sine wave:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
-<span style="color:#f92672">import</span> sys
-
-<span style="color:#75715e"># Grab the frame number from python3 easy_mode.py &lt;x&gt;</span>
-frame_number <span style="color:#f92672">=</span> int(sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>])
-
-<span style="color:#75715e"># Some global variables to define the whole run</span>
-total_number_of_frames <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
-total_width_of_sine_wave <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>pi
-
-<span style="color:#75715e"># How far through are we?</span>
-current_factor <span style="color:#f92672">=</span> frame_number <span style="color:#f92672">/</span> total_number_of_frames
-
-current_x_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(
-    <span style="color:#ae81ff">0</span>,
-    total_width_of_sine_wave <span style="color:#f92672">*</span> current_factor,
-    frame_number
-)
-current_y_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sin(current_x_data)
-
-<span style="color:#75715e"># Now we can do the plotting!</span>
-plt<span style="color:#f92672">.</span>plot(current_x_data, current_y_data)
-
-<span style="color:#75715e"># Have to set these otherwise we will get one ugly plot!</span>
-plt<span style="color:#f92672">.</span>xlim(<span style="color:#ae81ff">0</span>, total_width_of_sine_wave)
-plt<span style="color:#f92672">.</span>ylim(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.2</span>, <span style="color:#ae81ff">1.2</span>)
-
-plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;$x$&#34;</span>)
-plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;$\sin(x)$&#34;</span>)
-
-<span style="color:#75715e"># Make me pretty</span>
-plt<span style="color:#f92672">.</span>tight_layout()
-plt<span style="color:#f92672">.</span>savefig(<span style="color:#e6db74">&#34;image_</span><span style="color:#e6db74">{:03d}</span><span style="color:#e6db74">.png&#34;</span><span style="color:#f92672">.</span>format(frame_number))
-</code></pre></div><p>Then, we can make all 100 frames by running a little bash for loop,</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">for</span> image in <span style="color:#f92672">{</span>0..100<span style="color:#f92672">}</span>
-<span style="color:#66d9ef">do</span>
-  python3 easy_mode.py $image
-<span style="color:#66d9ef">done</span>
-</code></pre></div><p>and stitch them together in a movie using a (somewhat complicated) <code>ffmpeg</code> command,</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ffmpeg -i image_%03d.png -c:v libx264 -vf fps<span style="color:#f92672">=</span><span style="color:#ae81ff">25</span> -pix_fmt yuv420p out_easy_mode.mp4
-</code></pre></div><!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Grab the frame number from python3 easy_mode.py &lt;x&gt;</span>
+</span></span><span style="display:flex;"><span>frame_number <span style="color:#f92672">=</span> int(sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Some global variables to define the whole run</span>
+</span></span><span style="display:flex;"><span>total_number_of_frames <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>total_width_of_sine_wave <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>pi
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># How far through are we?</span>
+</span></span><span style="display:flex;"><span>current_factor <span style="color:#f92672">=</span> frame_number <span style="color:#f92672">/</span> total_number_of_frames
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>current_x_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    total_width_of_sine_wave <span style="color:#f92672">*</span> current_factor,
+</span></span><span style="display:flex;"><span>    frame_number
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>current_y_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sin(current_x_data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Now we can do the plotting!</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(current_x_data, current_y_data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Have to set these otherwise we will get one ugly plot!</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlim(<span style="color:#ae81ff">0</span>, total_width_of_sine_wave)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylim(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.2</span>, <span style="color:#ae81ff">1.2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;$x$&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;$\sin(x)$&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Make me pretty</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>savefig(<span style="color:#e6db74">&#34;image_</span><span style="color:#e6db74">{:03d}</span><span style="color:#e6db74">.png&#34;</span><span style="color:#f92672">.</span>format(frame_number))
+</span></span></code></pre></div><p>Then, we can make all 100 frames by running a little bash for loop,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> image in <span style="color:#f92672">{</span>0..100<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  python3 easy_mode.py $image
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><p>and stitch them together in a movie using a (somewhat complicated) <code>ffmpeg</code> command,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ffmpeg -i image_%03d.png -c:v libx264 -vf fps<span style="color:#f92672">=</span><span style="color:#ae81ff">25</span> -pix_fmt yuv420p out_easy_mode.mp4
+</span></span></code></pre></div><!-- raw HTML omitted -->
 <p>This ends up looking fine, but takes <em>ages</em>. There are a number of reasons for this:</p>
 <ul>
 <li>We are re-launching python for every frame, which takes quite a while in itself,</li>
@@ -144,68 +142,68 @@ We can pre-generate the data and just select sub-sets of it in this case.</p>
 <p>The hard part in this case is finding out <em>how</em> to update the line object. Each type
 of <code>matplotlib</code> object behaves in a slightly different way, but they usually have a
 <code>set_&lt;something&gt;</code> method that you can use to do this kind of updating.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
-
-<span style="color:#f92672">from</span> matplotlib.animation <span style="color:#f92672">import</span> FuncAnimation
-
-<span style="color:#75715e"># Some global variables to define the whole run</span>
-total_number_of_frames <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
-total_width_of_sine_wave <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>pi
-all_x_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0</span>, total_width_of_sine_wave, total_number_of_frames)
-all_y_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sin(all_x_data)
-
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">animate</span>(frame, line):
-    <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">    Animation function. Takes the current frame number (to select the potion of
-</span><span style="color:#e6db74">    data to plot) and a line object to update.
-</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
-
-    <span style="color:#75715e"># Not strictly neccessary, just so we know we are stealing these from</span>
-    <span style="color:#75715e"># the global scope</span>
-    <span style="color:#66d9ef">global</span> all_x_data, all_y_data
-
-    <span style="color:#75715e"># We want up-to and _including_ the frame&#39;th element</span>
-    current_x_data <span style="color:#f92672">=</span> all_x_data[: frame <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]
-    current_y_data <span style="color:#f92672">=</span> all_y_data[: frame <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]
-
-    line<span style="color:#f92672">.</span>set_xdata(current_x_data)
-    line<span style="color:#f92672">.</span>set_ydata(current_y_data)
-
-    <span style="color:#75715e"># This comma is necessary!</span>
-    <span style="color:#66d9ef">return</span> (line,)
-
-
-<span style="color:#75715e"># Now we can do the plotting!</span>
-fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">1</span>)
-<span style="color:#75715e"># Initialise our line</span>
-line, <span style="color:#f92672">=</span> ax<span style="color:#f92672">.</span>plot([<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>])
-
-<span style="color:#75715e"># Have to set these otherwise we will get one ugly plot!</span>
-ax<span style="color:#f92672">.</span>set_xlim(<span style="color:#ae81ff">0</span>, total_width_of_sine_wave)
-ax<span style="color:#f92672">.</span>set_ylim(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.2</span>, <span style="color:#ae81ff">1.2</span>)
-
-ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;$x$&#34;</span>)
-ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;$\sin(x)$&#34;</span>)
-
-<span style="color:#75715e"># Make me pretty</span>
-fig<span style="color:#f92672">.</span>tight_layout()
-
-animation <span style="color:#f92672">=</span> FuncAnimation(
-    <span style="color:#75715e"># Your Matplotlib Figure object</span>
-    fig,
-    <span style="color:#75715e"># The function that does the updating of the Figure</span>
-    animate,
-    <span style="color:#75715e"># Frame information (here just frame number)</span>
-    np<span style="color:#f92672">.</span>arange(total_number_of_frames),
-    <span style="color:#75715e"># Extra arguments to the animate function</span>
-    fargs<span style="color:#f92672">=</span>[line],
-    <span style="color:#75715e"># Frame-time in ms; i.e. for a given frame-rate x, 1000/x</span>
-    interval<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">25</span>
-)
-animation<span style="color:#f92672">.</span>save(<span style="color:#e6db74">&#34;out_funcanimation.mp4&#34;</span>)
-</code></pre></div><p>Thankfully, it looks exactly the same!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> matplotlib.animation <span style="color:#f92672">import</span> FuncAnimation
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Some global variables to define the whole run</span>
+</span></span><span style="display:flex;"><span>total_number_of_frames <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>total_width_of_sine_wave <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>pi
+</span></span><span style="display:flex;"><span>all_x_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0</span>, total_width_of_sine_wave, total_number_of_frames)
+</span></span><span style="display:flex;"><span>all_y_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sin(all_x_data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">animate</span>(frame, line):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Animation function. Takes the current frame number (to select the potion of
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    data to plot) and a line object to update.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Not strictly neccessary, just so we know we are stealing these from</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># the global scope</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> all_x_data, all_y_data
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># We want up-to and _including_ the frame&#39;th element</span>
+</span></span><span style="display:flex;"><span>    current_x_data <span style="color:#f92672">=</span> all_x_data[: frame <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>    current_y_data <span style="color:#f92672">=</span> all_y_data[: frame <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    line<span style="color:#f92672">.</span>set_xdata(current_x_data)
+</span></span><span style="display:flex;"><span>    line<span style="color:#f92672">.</span>set_ydata(current_y_data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This comma is necessary!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (line,)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Now we can do the plotting!</span>
+</span></span><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Initialise our line</span>
+</span></span><span style="display:flex;"><span>line, <span style="color:#f92672">=</span> ax<span style="color:#f92672">.</span>plot([<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Have to set these otherwise we will get one ugly plot!</span>
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xlim(<span style="color:#ae81ff">0</span>, total_width_of_sine_wave)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_ylim(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.2</span>, <span style="color:#ae81ff">1.2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;$x$&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;$\sin(x)$&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Make me pretty</span>
+</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>animation <span style="color:#f92672">=</span> FuncAnimation(
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Your Matplotlib Figure object</span>
+</span></span><span style="display:flex;"><span>    fig,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># The function that does the updating of the Figure</span>
+</span></span><span style="display:flex;"><span>    animate,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Frame information (here just frame number)</span>
+</span></span><span style="display:flex;"><span>    np<span style="color:#f92672">.</span>arange(total_number_of_frames),
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Extra arguments to the animate function</span>
+</span></span><span style="display:flex;"><span>    fargs<span style="color:#f92672">=</span>[line],
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Frame-time in ms; i.e. for a given frame-rate x, 1000/x</span>
+</span></span><span style="display:flex;"><span>    interval<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">25</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>animation<span style="color:#f92672">.</span>save(<span style="color:#e6db74">&#34;out_funcanimation.mp4&#34;</span>)
+</span></span></code></pre></div><p>Thankfully, it looks exactly the same!</p>
 <!-- raw HTML omitted -->
 <p>To make this movie using the <code>FuncAnimation</code> method, it took 2.16 seconds on my base-
 model 2017 (13 inch) MacBook Pro. That&rsquo;s a speed-up of around 30x just by not launching
@@ -248,16 +246,16 @@ all_data = [
 
 
 def animate(frame):
-    &quot;&quot;&quot;
+    &#34;&#34;&#34;
     Animation function. Takes the current frame number (to select the potion of
     data to plot) and a line object to update.
-    &quot;&quot;&quot;
+    &#34;&#34;&#34;
 
     # Not strictly neccessary, just so we know we are stealing these from
     # the global scope
     global all_data, image
 
-    # We want up-to and _including_ the frame'th element
+    # We want up-to and _including_ the frame&#39;th element
     image.set_array(all_data[frame])
 
     return image
@@ -265,11 +263,11 @@ def animate(frame):
 
 # Now we can do the plotting!
 fig, ax = plt.subplots(1, figsize=(1, 1))
-# Remove a bunch of stuff to make sure we only 'see' the actual imshow
+# Remove a bunch of stuff to make sure we only &#39;see&#39; the actual imshow
 # Stretch to fit the whole plane
 fig.subplots_adjust(0, 0, 1, 1)
 # Remove bounding line
-ax.axis(&quot;off&quot;)
+ax.axis(&#34;off&#34;)
 
 # Initialise our plot. Make sure you set vmin and vmax!
 image = ax.imshow(all_data[0], vmin=0, vmax=1)
@@ -287,8 +285,8 @@ animation = FuncAnimation(
     interval=1000 / 25
 )
 
-# Try to set the DPI to the actual number of pixels you're plotting
-animation.save(&quot;out_2dgrid.mp4&quot;, dpi=512)
+# Try to set the DPI to the actual number of pixels you&#39;re plotting
+animation.save(&#34;out_2dgrid.mp4&#34;, dpi=512)
 </code></pre><p>Here&rsquo;s the movie that produces!</p>
 <!-- raw HTML omitted -->
 <h1 id="sticking-it-all-together-with-ffmpeg">Sticking it all together (with <code>ffmpeg</code>)</h1>
@@ -309,7 +307,7 @@ stack them in a 2x2 grid. To do this, we have two options. We could run <code>ff
 times - twice with <code>hstack</code> to put two of them together, and once with <code>vstack</code> to
 stack those 2x1&rsquo;s on top of each other. Alternatively, we can use variables within
 <code>ffmpeg</code> itself. Here&rsquo;s the command to do that - we&rsquo;ll break this down afterwards:</p>
-<pre tabindex="0"><code>ffmpeg -i a.mp4 -i b.mp4 -i c.mp4 -i d.mp4 -filter_complex &quot;[0:v][1:v]hstack[top];[2:v][3:v]hstack[bottom];[top][bottom]vstack[out]&quot; -map &quot;[out]&quot; out.mp4
+<pre tabindex="0"><code>ffmpeg -i a.mp4 -i b.mp4 -i c.mp4 -i d.mp4 -filter_complex &#34;[0:v][1:v]hstack[top];[2:v][3:v]hstack[bottom];[top][bottom]vstack[out]&#34; -map &#34;[out]&#34; out.mp4
 </code></pre><p>There are a few things here that aren&rsquo;t immediately obvious:</p>
 <ul>
 <li><code>[i:v]</code> references the <code>-i &lt;video&gt;</code> input that was given (in that order, such that here <code>[0:v]</code> corresponds to <code>a.mp4</code>, <code>[2:v]</code> corresponds to <code>c.mp4</code> as a kind of variable</li>

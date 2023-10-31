@@ -5,6 +5,7 @@
     <link>https://www.joshborrow.com/categories/</link>
     <description>Recent content in Categories on Josh Borrow</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-gb</language><atom:link href="https://www.joshborrow.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-gb</language>
+    <atom:link href="https://www.joshborrow.com/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
